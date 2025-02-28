@@ -6,7 +6,7 @@ describe('Random Component', () => {
   it('renders correctly', () => {
     render(<UserForm />)
     screen.debug() // Logs the DOM structure
-    const element = screen.getByText('Random Component')
+    const element = screen.getByText('User Form')
     expect(element).toBeInTheDocument()
   })
 })
