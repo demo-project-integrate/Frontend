@@ -23,7 +23,7 @@ const UserForm = () => {
       setError(''); // Reset any previous errors
 
       // Make the POST API call
-      const response = await axios.post('https://your-api-url.com/endpoint', data);
+      const response = await axios.post('https://your-api-url.com/endpoint ', data);
       
       console.log('Response:', response.data); // Handle the response as necessary
       alert('Data submitted successfully!');
