@@ -33,11 +33,12 @@ jobs:
         with:
           node-version: 20.x
       
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONARCLOUD_TOKEN }}
+      - name: Run Sonar Scanner
+        run: |
+          sonar-scanner -D"sonar.projectKey=demo-pipeline" \
+                        -D"sonar.sources=." \
+                        -D"sonar.host.url=http://40.82.200.144:9000" \
+                        -D"sonar.login=${{ secrets.SONAR_TOKEN }}"
 
   dependency-track:
     runs-on: ubuntu-latest
