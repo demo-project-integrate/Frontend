@@ -32,6 +32,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20.x
+
+      - name: Install SonarScanner
+        run: |
+          wget -qO- "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip" | bsdtar -xvf- -C /opt/
+          echo "/opt/sonar-scanner-5.0.1.3006-linux/bin" >> $GITHUB_PATH
       
       - name: Run Sonar Scanner
         run: |
