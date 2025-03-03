@@ -36,6 +36,16 @@ jobs:
       - name: Start Azure VM
         run: |
           az vm start --resource-group demo-pipelining_group --name demo-pipelining
+
+      - name: Start SonarQube and PostgreSQL on Azure VM
+        run: |
+          ssh -o StrictHostKeyChecking=no azureuser@40.82.200.144 << EOF
+            sudo systemctl start postgresql
+            sudo systemctl start sonarqube
+          EOF
+        env:
+          AZURE_SSH_PRIVATE_KEY: ${{ secrets.AZURE_SSH_PRIVATE_KEY }}
+      
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
