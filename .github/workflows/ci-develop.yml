@@ -10,6 +10,14 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Start Azure VM
+        run: |
+          az vm start --resource-group demo-pipelining_group --name demo-pipelining
       - uses: actions/checkout@v4
       
       - name: Setup Node.js
@@ -46,6 +54,11 @@ jobs:
                         -D"sonar.sources=." \
                         -D"sonar.host.url=http://40.82.200.144:9000" \
                         -D"sonar.login=${{ secrets.SONAR_TOKEN }}"
+
+      - name: Stop Azure VM
+        if: always()
+        run: |
+          az vm deallocate --resource-group demo-pipelining_group --name demo-pipelining
 
   dependency-track:
     runs-on: ubuntu-latest
