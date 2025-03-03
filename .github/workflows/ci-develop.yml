@@ -10,14 +10,6 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Login to Azure
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Start Azure VM
-        run: |
-          az vm start --resource-group demo-pipelining_group --name demo-pipelining
       - uses: actions/checkout@v4
       
       - name: Setup Node.js
@@ -36,6 +28,14 @@ jobs:
     runs-on: ubuntu-latest
     needs: [test]
     steps:
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Start Azure VM
+        run: |
+          az vm start --resource-group demo-pipelining_group --name demo-pipelining
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
