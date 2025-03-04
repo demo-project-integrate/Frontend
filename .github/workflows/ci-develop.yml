@@ -79,10 +79,14 @@ jobs:
     needs: [azureVM]
     steps:
       - uses: actions/checkout@v4
-      
+    
       - name: Generate SBOM
-        uses: cyclonedx/cdxgen@main
-      
+        uses: cyclonedx/cdxgen@v9.8.4  # Use latest stable version
+        with:
+          type: npm                   # Explicitly specify npm project type
+          output: bom.xml             # Explicit output file
+          args: --omit dev            # Optional: exclude dev dependencies
+    
       - name: Upload SBOM to Dependency-Track
         uses: DependencyTrack/gh-upload-sbom@v3
         with:
@@ -93,4 +97,4 @@ jobs:
           project: ${{ secrets.PROJECT_ID }}
           projectName: 'demopipeline-frontend'
           projectVersion: '1.0'
-          bomFilename: "target/bom.xml"
+          bomFilename: "bom.xml"      # Updated path to match cdxgen output
