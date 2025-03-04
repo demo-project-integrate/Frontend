@@ -83,13 +83,11 @@ jobs:
       - name: Install Node.js dependencies
         run: npm ci
 
-      - name: Generate SBOM
-        uses: CycloneDX/gh-action-generate-sbom@v3
-        with:
-          project-type: npm
-          output-format: xml
-          output-file: bom.xml
-          arguments: --omit dev
+      - name: Install CycloneDX
+        run: npm install -g @cyclonedx/cyclonedx-npm
+
+      - name: Generate SBOM 
+        run: cyclonedx-npm --output-format xml --output-file bom.xml
 
       - name: Upload SBOM to Dependency-Track
         uses: DependencyTrack/gh-upload-sbom@v3
