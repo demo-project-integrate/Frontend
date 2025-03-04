@@ -81,7 +81,7 @@ jobs:
       - uses: actions/checkout@v4
       
       - name: Generate SBOM
-        uses: cyclonedx/cdxgen@v9
+        uses: cyclonedx/cdxgen@main
       
       - name: Upload SBOM to Dependency-Track
         uses: DependencyTrack/gh-upload-sbom@v3
