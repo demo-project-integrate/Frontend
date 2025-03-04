@@ -43,7 +43,10 @@ jobs:
     steps:
       - name: Start SonarQube and PostgreSQL on Azure VM
         run: |
-          ssh -tt -o StrictHostKeyChecking=no demopipelining@40.82.200.144 << EOF
+          mkdir -p ~/.ssh
+          echo "$AZURE_SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh -i ~/.ssh/id_rsa -tt -o StrictHostKeyChecking=no demopipelining@40.82.200.144 << EOF
             sudo systemctl start postgresql
             sudo systemctl start sonarqube
           EOF
