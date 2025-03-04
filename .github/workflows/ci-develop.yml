@@ -47,7 +47,12 @@ jobs:
           echo "$AZURE_SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no demopipelining@40.82.200.144 \
-            "sudo systemctl start postgresql && sudo systemctl start sonarqube"
+            "sudo systemctl start postgresql && \
+             sudo systemctl start sonarqube && \
+             echo 'Waiting for SonarQube to become ready...' && \
+             until curl -sSf --retry 12 --retry-all-errors --retry-delay 10 http://localhost:9000/api/system/status | grep -q '"UP"'; do \
+               sleep 10; \
+             done"
         env:
           AZURE_SSH_PRIVATE_KEY: ${{ secrets.AZURE_SSH_PRIVATE_KEY }}
       
