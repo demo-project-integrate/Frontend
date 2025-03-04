@@ -24,7 +24,7 @@ jobs:
       - name: Run unit tests
         run: npm test
 
-  sonarcloud:
+  azureVM:
     runs-on: ubuntu-latest
     needs: [test]
     steps:
@@ -37,6 +37,10 @@ jobs:
         run: |
           az vm start --resource-group demo-pipelining_group --name demo-pipelining
 
+  sonarcloud:
+    runs-on: ubuntu-latest
+    needs: [azureVM]
+    steps:
       - name: Start SonarQube and PostgreSQL on Azure VM
         run: |
           ssh -tt -o StrictHostKeyChecking=no azureuser@40.82.200.144 << EOF
@@ -72,21 +76,21 @@ jobs:
 
   dependency-track:
     runs-on: ubuntu-latest
-    needs: [test]
+    needs: [azureVM]
     steps:
       - uses: actions/checkout@v4
       
       - name: Generate SBOM
         uses: cyclonedx/cdxgen@v9
-        with:
-          output-format: json
-          output-file: bom.json
       
-      - name: Upload to Dependency-Track
-        run: |
-          curl -X "POST" "${{ secrets.DEPENDENCY_TRACK_URL }}/api/v1/bom" \
-               -H "Content-Type: multipart/form-data" \
-               -H "X-API-Key: ${{ secrets.DEPENDENCY_TRACK_API_KEY }}" \
-               -F "projectName=demo-pipeline" \
-               -F "projectVersion=0.0.0" \
-               -F "bom=@bom.json"
+      - name: Upload SBOM to Dependency-Track
+        uses: DependencyTrack/gh-upload-sbom@v3
+        with:
+          serverHostname: '40.82.200.144'
+          port: ${{ secrets.DTRACK_PORT }}
+          protocol: ${{ secrets.DTRACK_PROTOCOL }}
+          apiKey: ${{ secrets.DTRACK_API_KEY }}
+          project: ${{ secrets.PROJECT_ID }}
+          projectName: 'demopipeline-frontend'
+          projectVersion: '1.0'
+          bomFilename: "target/bom.xml"
