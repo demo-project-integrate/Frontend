@@ -39,7 +39,7 @@ jobs:
 
       - name: Start SonarQube and PostgreSQL on Azure VM
         run: |
-          ssh -o StrictHostKeyChecking=no azureuser@40.82.200.144 << EOF
+          ssh -tt -o StrictHostKeyChecking=no azureuser@40.82.200.144 << EOF
             sudo systemctl start postgresql
             sudo systemctl start sonarqube
           EOF
