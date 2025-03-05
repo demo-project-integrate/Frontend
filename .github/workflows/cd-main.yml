@@ -24,7 +24,6 @@ jobs:
       - name: Clone Frontend Repo
         env:
           AZURE_SSH_PRIVATE_KEY: ${{ secrets.AZURE_SSH_PRIVATE_KEY }}
-          GH_SSH_KEY: ${{ secrets.GH_SECRET_KEY }}
           AZURE_VM_USERNAME: ${{ secrets.AZURE_VM_USERNAME }}
           AZURE_VM_IP: ${{ secrets. AZURE_VM_IP }}
         run: |
@@ -32,9 +31,7 @@ jobs:
           echo "$AZURE_SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no demopipelining@40.82.200.144 \
-            "mkdir -p ~/.ssh && \
-             echo '$GH_SSH_KEY' > ~/.ssh/github_key && \
-             chmod 600 ~/.ssh/github_key && \
-             echo -e 'Host github.com\n  HostName github.com\n  IdentityFile ~/.ssh/github_key' >> ~/.ssh/config && \
+            "chmod 600 ~/.ssh/id_rsa && \
+             echo -e 'Host github.com\n  HostName github.com\n  IdentityFile ~/.ssh/id_rsa' >> ~/.ssh/config && \
              git clone git@github.com:${{ github.repository }}.git frontend || \
              (cd frontend && git pull origin main)"
