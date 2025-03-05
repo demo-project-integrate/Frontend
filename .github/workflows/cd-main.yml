@@ -15,15 +15,15 @@ jobs:
       - name: Set up SSH for Azure VM
         run: |
           mkdir -p ~/.ssh
-          echo "$AZURE_SSH_PRIVATE_KEY" > ~/.ssh/id_rsa_azure
+          echo "$AZURE_SSH_FRONTEND_KEY" > ~/.ssh/id_rsa_azure
           chmod 600 ~/.ssh/id_rsa_azure
           ssh-keyscan -H ${{ secrets.AZURE_VM_IP }} >> ~/.ssh/known_hosts
         env:
-          AZURE_SSH_PRIVATE_KEY: ${{ secrets.AZURE_SSH_PRIVATE_KEY }}
+          AZURE_SSH_FRONTEND_KEY: ${{ secrets.AZURE_SSH_FRONTEND_KEY }}
 
       - name: Clone Frontend Repo
         env:
-          AZURE_SSH_PRIVATE_KEY: ${{ secrets.AZURE_SSH_PRIVATE_KEY }}
+          AZURE_SSH_FRONTEND_KEY: ${{ secrets.AZURE_SSH_FRONTEND_KEY }}
           AZURE_VM_USERNAME: ${{ secrets.AZURE_VM_USERNAME }}
           AZURE_VM_IP: ${{ secrets. AZURE_VM_IP }}
         run: |
