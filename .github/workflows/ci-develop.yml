@@ -24,38 +24,93 @@ jobs:
       - name: Run unit tests
         run: npm test
 
-  sonarcloud:
+  azureVM:
     runs-on: ubuntu-latest
     needs: [test]
     steps:
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Start Azure VM
+        run: |
+          az vm start --resource-group demo-pipelining_group --name demo-pipelining
+
+  sonarcloud:
+    runs-on: ubuntu-latest
+    needs: [azureVM]
+    steps:
+      - name: Start SonarQube and PostgreSQL on Azure VM
+        run: |
+          mkdir -p ~/.ssh
+          echo "$AZURE_SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no demopipelining@40.82.200.144 \
+            "sudo systemctl start postgresql && \
+             sudo systemctl start sonarqube && \
+             echo 'Waiting for SonarQube to become ready...' && \
+             until curl -sSf --retry 12 --retry-all-errors --retry-delay 10 http://localhost:9000/api/system/status | grep -q '"UP"'; do \
+               sleep 10; \
+             done"
+        env:
+          AZURE_SSH_PRIVATE_KEY: ${{ secrets.AZURE_SSH_PRIVATE_KEY }}
+      
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20.x
+
+      - name: Install SonarScanner
+        run: |
+          wget "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip"
+          unzip sonar-scanner-cli-5.0.1.3006-linux.zip
+          sudo mv sonar-scanner-5.0.1.3006-linux /opt/sonar-scanner
+          echo "/opt/sonar-scanner/bin" >> $GITHUB_PATH
       
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONARCLOUD_TOKEN }}
+      - name: Run Sonar Scanner
+        run: |
+          sonar-scanner -D"sonar.projectKey=demo-pipeline" \
+                        -D"sonar.sources=." \
+                        -D"sonar.host.url=http://40.82.200.144:9000" \
+                        -D"sonar.login=${{ secrets.SONAR_TOKEN }}"
 
   dependency-track:
     runs-on: ubuntu-latest
-    needs: [test]
+    needs: [azureVM]
     steps:
       - uses: actions/checkout@v4
-      
-      - name: Generate SBOM
-        uses: cyclonedx/cdxgen@v9
+
+      - name: Install Node.js dependencies
+        run: npm ci
+
+      - name: Install CycloneDX
+        run: npm install -g @cyclonedx/cyclonedx-npm
+
+      - name: Generate SBOM 
+        run: cyclonedx-npm --output-format xml --output-file bom.xml
+
+      - name: Upload SBOM to Dependency-Track
+        uses: DependencyTrack/gh-upload-sbom@v3
         with:
-          output-format: json
-          output-file: bom.json
-      
-      - name: Upload to Dependency-Track
+          serverHostname: '40.82.200.144'
+          port: ${{ secrets.DTRACK_PORT }}
+          protocol: ${{ secrets.DTRACK_PROTOCOL }}
+          apiKey: ${{ secrets.DTRACK_API_KEY }}
+          project: ${{ secrets.PROJECT_ID }}
+          projectName: 'demopipeline-frontend'
+          projectVersion: '1.0'
+          bomFilename: "bom.xml"
+
+  azurevm-stop:
+    runs-on: ubuntu-latest
+    needs: [sonarcloud,dependency-track]
+    steps:
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Stop Azure VM
+        if: always()
         run: |
-          curl -X "POST" "${{ secrets.DEPENDENCY_TRACK_URL }}/api/v1/bom" \
-               -H "Content-Type: multipart/form-data" \
-               -H "X-API-Key: ${{ secrets.DEPENDENCY_TRACK_API_KEY }}" \
-               -F "projectName=demo-pipeline" \
-               -F "projectVersion=0.0.0" \
-               -F "bom=@bom.json"
+          az vm deallocate --resource-group demo-pipelining_group --name demo-pipelining
