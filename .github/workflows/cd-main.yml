@@ -30,7 +30,7 @@ jobs:
           mkdir -p ~/.ssh
           echo "$AZURE_SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no '$AZURE_VM_USERNAME'@'$AZURE_VM_IP' \
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.AZURE_VM_USERNAME }}@${{ secrets.AZURE_VM_IP }} \
             "chmod 600 ~/.ssh/id_rsa && \
              echo -e 'Host github.com\n  HostName github.com\n  IdentityFile ~/.ssh/id_rsa' >> ~/.ssh/config && \
              git clone git@github.com:${{ github.repository }}.git frontend || \
