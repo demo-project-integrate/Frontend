@@ -3,37 +3,44 @@ name: Deploy to Azure VM
 on:
   push:
     branches:
-      - main  # Change this to your target branch
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up SSH
+      - name: Set up SSH for Azure VM
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.AZURE_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
+          echo "${{ secrets.AZURE_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa_azure
+          chmod 600 ~/.ssh/id_rsa_azure
           ssh-keyscan -H ${{ secrets.AZURE_VM_IP }} >> ~/.ssh/known_hosts
 
       - name: Deploy Code to Azure VM
         run: |
-          ssh -i ~/.ssh/id_rsa ${{ secrets.AZURE_VM_USERNAME }}@${{ secrets.AZURE_VM_IP }} << 'EOF'
-            set -e  # Exit immediately if a command fails
+          # Use unquoted EOF to expand variables
+          ssh -i ~/.ssh/id_rsa_azure ${{ secrets.AZURE_VM_USERNAME }}@${{ secrets.AZURE_VM_IP }} << EOF
+            set -e  # Fail on error
+
+            # Configure GitHub SSH access on the VM
+            mkdir -p ~/.ssh
+            echo "$GH_SECRET_KEY" > ~/.ssh/id_rsa_github
+            chmod 600 ~/.ssh/id_rsa_github
+            ssh-keyscan github.com >> ~/.ssh/known_hosts 2>/dev/null
+
+            # Clone/Pull repository using GitHub SSH key
+            export GIT_SSH_COMMAND="ssh -i ~/.ssh/id_rsa_github -o IdentitiesOnly=yes"
             
-            # Ensure the frontend directory exists
             mkdir -p ~/frontend
             cd ~/frontend
-
-            # Use SSH-based Git authentication
             if [ ! -d ".git" ]; then
               git clone git@github.com:${{ github.repository }}.git .
             else
               git pull origin main
             fi
           EOF
-
+        env:
+          GITHUB_SSH_PRIVATE_KEY: ${{ secrets.GH_SECRET_KEY }}
