@@ -28,7 +28,7 @@ jobs:
           AZURE_VM_IP: ${{ secrets. AZURE_VM_IP }}
         run: |
           mkdir -p ~/.ssh
-          echo "$AZURE_SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          echo "$AZURE_SSH_FRONTEND_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.AZURE_VM_USERNAME }}@${{ secrets.AZURE_VM_IP }} \
             "chmod 600 ~/.ssh/id_rsa && \
