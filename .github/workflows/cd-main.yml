@@ -43,4 +43,4 @@ jobs:
             fi
           EOF
         env:
-          GITHUB_SSH_PRIVATE_KEY: ${{ secrets.GH_SECRET_KEY }}
+          GH_SECRET_KEY: ${{ secrets.GH_SECRET_KEY }}
