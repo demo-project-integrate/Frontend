@@ -1,37 +1,31 @@
-name: CD Pipeline (Main)
+name: Deploy to Azure VM
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main  # Change this to your target branch
 
 jobs:
-  build-deploy:
+  deploy:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pages: write
-      id-token: write
 
     steps:
-      - uses: actions/checkout@v4
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20.x
-          cache: 'npm'
-      
-      - name: Install dependencies
-        run: npm ci
-      
-      - name: Run tests
-        run: npm run test -- --run
-      
-      - name: Build project
-        run: npm run build
-      
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.AZURE_SSH_FRONTEND_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.AZURE_VM_IP }} >> ~/.ssh/known_hosts
+
+      - name: Pull latest code to Azure VM
+        run: |
+          ssh -i ~/.ssh/id_rsa ${{ secrets.AZURE_VM_USERNAME }}@${{ secrets.AZURE_VM_IP }} << 'EOF'
+            cd ~/frontend || mkdir ~/frontend && cd ~/frontend
+            git init
+            git remote add origin https://github.com/${{ github.repository }} || true
+            git fetch origin
+            git reset --hard origin/main
+          EOF
