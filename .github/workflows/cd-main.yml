@@ -35,3 +35,22 @@ jobs:
              echo -e 'Host github.com\n  HostName github.com\n  IdentityFile ~/.ssh/id_rsa' >> ~/.ssh/config && \
              git clone git@github.com:${{ github.repository }}.git frontend || \
              (cd frontend && git pull origin main)"
+  trigger-e2e:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate GitHub App Token
+        id: generate-token
+        uses: tibdex/github-app-token@v1
+        with:
+          app_id: ${{ secrets.APP_ID }}
+          private_key: ${{ secrets.APP_PRIVATE_KEY }}
+
+      - name: Trigger E2E Workflow
+        run: |
+          curl -X POST \
+            -H "Authorization: Bearer ${{ steps.generate-token.outputs.token }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/your-org/E2E/dispatches \
+            -d '{"event_type": "trigger_e2e"}'
+    
