@@ -31,7 +31,10 @@ jobs:
           echo "$AZURE_SSH_FRONTEND_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.AZURE_VM_USERNAME }}@${{ secrets.AZURE_VM_IP }} \
-            "chmod 600 ~/.ssh/id_rsa && \
+            "cd .ssh/ && \
+             rm -rf config && \
+             cd ../ && \
+             chmod 600 ~/.ssh/id_rsa && \
              echo -e 'Host github.com\n  HostName github.com\n  IdentityFile ~/.ssh/id_rsa' >> ~/.ssh/config && \
              git clone git@github.com:${{ github.repository }}.git frontend || \
              (cd frontend && git pull origin main)"
