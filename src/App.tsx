@@ -1,17 +1,13 @@
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import React from "react";
+import {keycloak} from "./providers/keycloak";
 
-import LoginPage from './pages/LoginPage'
 
-function App() {
+const App: React.FC = () => {
+    return (
+        <button onClick={() => keycloak.logout({redirectUri: "http://localhost:5173"})}>
+            Welcome
+        </button>
+    );
+};
 
-  return (
-    <>
-    <LoginPage />
-    </>
-  )
-}
-
-export default App
+export default App;
