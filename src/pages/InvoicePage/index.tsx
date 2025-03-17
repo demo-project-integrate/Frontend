@@ -1,4 +1,4 @@
-import React from "react";
+
 const  Invoice = () => {
     return (
       <div className="Invoice">
@@ -20,7 +20,7 @@ const  Invoice = () => {
                   <input
                     type="text"
                     placeholder="Business Name"
-                    className="w-full md:w-[70%] border-[1px] border-gray-400 rounded-md p-2"
+                    className="w-full md:w-[70%] border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                   />
                 </div>
                 <div className="mt-5 w-[100%] flex flex-row items-center">
@@ -28,7 +28,7 @@ const  Invoice = () => {
                   <input
                     type="text"
                     placeholder="Email"
-                    className="w-full md:w-[70%] border-[1px] border-gray-400 rounded-md p-2"
+                    className="w-full md:w-[70%] border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                   />
                 </div>
                 <div className="mt-5 w-[100%] flex flex-row items-center">
@@ -36,7 +36,7 @@ const  Invoice = () => {
                   <input
                     type="text"
                     placeholder="Address"
-                    className="w-full md:w-[70%] border-[1px] border-gray-400 rounded-md p-2"
+                    className="w-full md:w-[70%] border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                   />
                 </div>
                 <div className="mt-5 w-[100%] flex flex-row items-center">
@@ -44,7 +44,7 @@ const  Invoice = () => {
                   <input
                     type="text"
                     placeholder="Phone"
-                    className="w-full md:w-[70%] border-[1px] border-gray-400 rounded-md p-2"
+                    className="w-full md:w-[70%] border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                   />
                 </div>
                 <div className="mt-5 w-[100%] flex flex-row items-center">
@@ -52,7 +52,7 @@ const  Invoice = () => {
                   <input
                     type="text"
                     placeholder="Business Number"
-                    className="w-full md:w-[70%] border-[1px] border-gray-400 rounded-md p-2"
+                    className="w-full md:w-[70%] border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                   />
                 </div>
               </div>
@@ -65,7 +65,7 @@ const  Invoice = () => {
                   <input
                     type="text"
                     placeholder="Name"
-                    className="w-full md:w-[70%] border-[1px] border-gray-400 rounded-md p-2"
+                    className="w-full md:w-[70%] border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                   />
                 </div>
                 <div className="mt-5 w-[100%] flex flex-row items-center">
@@ -73,7 +73,7 @@ const  Invoice = () => {
                   <input
                     type="text"
                     placeholder="Email"
-                    className="w-full md:w-[70%] border-[1px] border-gray-400 rounded-md p-2"
+                    className="w-full md:w-[70%] border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                   />
                 </div>
                 <div className="mt-5 w-[100%] flex flex-row items-center">
@@ -81,7 +81,7 @@ const  Invoice = () => {
                   <input
                     type="text"
                     placeholder="Client Address"
-                    className="w-full md:w-[70%] border-[1px] border-gray-400 rounded-md p-2"
+                    className="w-full md:w-[70%] border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                   />
                 </div>
                 <div className="mt-5 w-[100%] flex flex-row items-center">
@@ -89,7 +89,7 @@ const  Invoice = () => {
                   <input
                     type="text"
                     placeholder="Client Phone"
-                    className="w-full md:w-[70%] border-[1px] border-gray-400 rounded-md p-2"
+                    className="w-full md:w-[70%] border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                   />
                 </div>
                 <div className="mt-5 w-[100%] flex flex-row items-center">
@@ -97,7 +97,7 @@ const  Invoice = () => {
                   <input
                     type="text"
                     placeholder="Mobile"
-                    className="w-full md:w-[70%] border-[1px] border-gray-400 rounded-md p-2"
+                    className="w-full md:w-[70%] border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                   />
                 </div>
               </div>
@@ -110,7 +110,7 @@ const  Invoice = () => {
                   type="text"
                   disabled
                   value={`INV${Math.floor(Math.random() * 10000000)}`}
-                  className="w-full md:w-[70%] border-[1px] border-gray-400 rounded-md p-2"
+                  className="w-full md:w-[70%] border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                 />
               </div>
               <div className="mt-5 w-full md:w-[50%] flex flex-col md:flex-row md:items-center">
@@ -119,7 +119,7 @@ const  Invoice = () => {
                   type="text"
                   disabled
                   value={`${new Date().toLocaleString().split(",")[0]}`}
-                  className="w-full md:w-[70%] border-[1px] border-gray-400 rounded-md p-2"
+                  className="w-full md:w-[70%] border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                 />
               </div>
               <div className="mt-5 w-full md:w-[50%] flex flex-col md:flex-row md:items-center">
@@ -128,7 +128,7 @@ const  Invoice = () => {
                   type="text"
                   disabled
                   value={`On Receipt`}
-                  className="w-full md:w-[70%] border-[1px] border-gray-400 rounded-md p-2"
+                  className="w-full md:w-[70%] border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                 />
               </div>
             </div>
