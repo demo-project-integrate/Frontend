@@ -1,0 +1,33 @@
+[
+    {
+      "productName": "Wireless Mouse",
+      "description": "Ergonomic wireless mouse with 2.4 GHz connectivity and adjustable DPI settings.",
+      "price": 799.99,
+      "hcnCode": "847160"
+    },
+    {
+      "productName": "Mechanical Keyboard",
+      "description": "Durable mechanical keyboard with RGB backlighting and anti-ghosting keys.",
+      "price": 1499.99,
+      "hcnCode": "847160"
+    },
+    {
+      "productName": "Gaming Headset",
+      "description": "Surround sound gaming headset with noise-canceling microphone and soft ear cushions.",
+      "price": 2499.99,
+      "hcnCode": "851830"
+    },
+    {
+      "productName": "USB-C Charging Cable",
+      "description": "Fast charging USB-C cable with braided design for extra durability.",
+      "price": 299.99,
+      "hcnCode": "854442"
+    },
+    {
+      "productName": "Portable SSD 1TB",
+      "description": "High-speed portable SSD with USB 3.2 Gen 2 for fast data transfer.",
+      "price": 4999.99,
+      "hcnCode": "847170"
+    }
+  ]
+  
