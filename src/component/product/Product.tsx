@@ -24,6 +24,7 @@ const Product = () => {
                 </label>
                 <input
                   type="text"
+                  id="productName"
                   value={product}
                   onChange={(e) => setProduct(e.target.value)}
                   className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
@@ -39,6 +40,7 @@ const Product = () => {
                 </label>
                 <textarea
                   name="productDesc"
+                  id="productDesc"
                   className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400 h-[200px] focus:outline-none resize-none"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
@@ -57,6 +59,7 @@ const Product = () => {
                 <input
                   type="text"
                   value={hcnCode}
+                  id="hcnCode"
                   onChange={(e) => setHcnCode(e.target.value)}
                   className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                   placeholder="Enter HSN code"
@@ -72,6 +75,7 @@ const Product = () => {
                 <input
                   type="text"
                   value={price}
+                  id="productPrice"
                   onChange={(e) => setPrice(e.target.value)}
                   className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                   placeholder="Enter price"
