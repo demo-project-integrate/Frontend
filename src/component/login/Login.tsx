@@ -23,11 +23,11 @@ const LoginPage: React.FC = () => {
 
       {/* Content */}
       <div className="flex flex-col items-center justify-center w-full text-center text-white px-0">
-        <h1 className="text-6xl font-extrabold mb-4">
+        <h1 className="lg:text-6xl md:text-3xl font-extrabold mb-4">
           Invoice Management System
         </h1>
 
-        <p className="text-xl max-w-2xl mb-6">
+        <p className="lg:text-xl md:text-xs text-xs max-w-2xl mb-6">
           Generate invoices, track payments, and manage your finances with ease
           — all in one intuitive platform.
         </p>

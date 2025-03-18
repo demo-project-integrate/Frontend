@@ -4,6 +4,7 @@ import App from "../App";
 import ProductPage from "../pages/ProductPage";
 import InvoicePage from "../pages/InvoicePage";
 import RootLayout from "../component/RootLayout";
+import ProductListPage from "../pages/ProductListPage";
 let router = createBrowserRouter([
   {
     path: "/",
@@ -24,6 +25,10 @@ let router = createBrowserRouter([
       {
         path: "/invoice",
         element: <InvoicePage />,
+      },
+      {
+        path: "/productlist",
+        element: <ProductListPage />,
       },
     ]
   }

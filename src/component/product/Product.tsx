@@ -13,7 +13,8 @@ const Product = () => {
           <h1 className="text-3xl  font-extrabold mb-6  text-center ">
             Add Product
           </h1>
-          <form action="" className="flex  gap-10">
+          <form action="" className="flex flex-col  gap-10">
+            <div className="flex gap-10">
             <div className="flex flex-col w-[50%] gap-10">
               <div className="flex flex-col gap-2 w-[100%] ">
                 <label
@@ -83,14 +84,15 @@ const Product = () => {
               </div>
               
             </div>
-      
-          </form>
-          <button
+            </div>
+            <button
               type="submit"
-              className="bg-blue-400 text-white font-bold py-2 px-4 rounded-lg hover:bg-[#2849a3] transition duration-300 mt-4"
+              className="bg-blue-400 w-fit text-white font-bold py-2 px-4 rounded-lg hover:bg-[#2849a3] transition duration-300 mt-4"
             >
               Submit
             </button>
+          </form>
+        
         </div>
       </div>
     </>
