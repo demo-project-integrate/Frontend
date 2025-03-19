@@ -39,10 +39,10 @@ const ProductList = () => {
                   ₹{product.price.toFixed(2)}
                 </td>
                 <td className="py-2 px-4 text-gray-500">{product.hcnCode}</td>
-                <td>
+                <td data-testid="delete-icon">
                   <MdDelete />
                 </td>
-                <td>
+                <td data-testid="edit-icon">
                   <MdEditSquare />
                 </td>
               </tr>
