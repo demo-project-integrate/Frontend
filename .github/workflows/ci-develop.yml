@@ -163,7 +163,7 @@ jobs:
           mkdir -p ~/.ssh
           echo "$AZURE_SSH_FRONTEND_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.AZURE_VM_USER }}@${{ secrets.AZURE_VM_IP }} \
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.AZURE_VM_USERNAME }}@${{ secrets.AZURE_VM_IP }} \
             "cd test && \
              git pull origin develop && \
              npm install && \
@@ -171,7 +171,7 @@ jobs:
              exit 0" &
       - name: Wait for Frontend to be Available
         run: |
-          until curl -s http://${{ secrets.AZURE_VM_IP }}:5173 >/dev/null; do
+          until curl -s http://${{ secrets.AZURE_VM_IP }}:8081 >/dev/null; do
             echo "Waiting for frontend..."
             sleep 5
           done
