@@ -148,3 +148,29 @@ jobs:
              echo -e 'Host github.com\n  HostName github.com\n  IdentityFile ~/.ssh/id_rsa' >> ~/.ssh/config && \
              git clone git@github.com:${{ github.repository }}.git test || \
              (cd test && git pull origin develop)"
+             
+  start_frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Start Frontend
+        env:
+          AZURE_SSH_FRONTEND_KEY: ${{ secrets.AZURE_SSH_FRONTEND_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$AZURE_SSH_FRONTEND_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.AZURE_VM_USER }}@${{ secrets.AZURE_VM_IP }} \
+            "cd test && \
+             git pull origin develop && \
+             npm install && \
+             nohup npm run dev -- --host --port 8081 > frontend.log 2>&1 & echo \$! > frontend.pid && \
+             exit 0" &
+      - name: Wait for Frontend to be Available
+        run: |
+          until curl -s http://${{ secrets.AZURE_VM_IP }}:5173 >/dev/null; do
+            echo "Waiting for frontend..."
+            sleep 5
+          done
