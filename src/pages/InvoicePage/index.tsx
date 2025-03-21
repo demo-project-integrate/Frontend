@@ -210,8 +210,14 @@ const  Invoice = () => {
                   className="w-full h-28 border-[1px] border-gray-400 rounded-md p-2"
                 />
               </div>
-         
+              <button
+              type="submit"
+              className="bg-blue-400 w-fit text-white font-bold py-2 px-4 rounded-lg hover:bg-[#2849a3] transition duration-300 mt-4"
+            >
+              Generate Invoice
+            </button>
         </div>
+       
       </div>
     );
   }

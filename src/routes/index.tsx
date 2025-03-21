@@ -5,6 +5,10 @@ import ProductPage from "../pages/ProductPage";
 import InvoicePage from "../pages/InvoicePage";
 import RootLayout from "../component/RootLayout";
 import ProductListPage from "../pages/ProductListPage";
+import InvoiceListPage from "../pages/InvoiceListPage";
+import BalanceSheet from "../pages/BalanceSheet";
+import Cashflow from "../pages/Cashflow";
+import ProfiitLoss from "../pages/Profit&Loss";
 let router = createBrowserRouter([
   {
     path: "/",
@@ -27,9 +31,26 @@ let router = createBrowserRouter([
         element: <InvoicePage />,
       },
       {
+        path: "/invoicelist",
+        element: <InvoiceListPage />,
+      },
+
+      {
         path: "/productlist",
         element: <ProductListPage />,
       },
+{
+  path:"/balancesheet", 
+  element:<BalanceSheet/>
+},
+{
+  path:"/cashflow", 
+  element:<Cashflow/>
+},
+{
+  path:"/p&l",
+  element:<ProfiitLoss/>
+}
     ]
   }
 ]);
