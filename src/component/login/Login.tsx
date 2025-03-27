@@ -1,10 +1,13 @@
 import React from "react";
-import { keycloak } from "../../providers/keycloak";
+import { useKeycloak } from "../../providers/keycloak";
 
 const LoginPage: React.FC = () => {
-  // const [authenticated, setAuthenticated] = useState<boolean>(false);
+  const { keycloak } = useKeycloak();
+
   const handleLogin = () => {
-    keycloak.login({ redirectUri: "http://localhost:5173/dashboard" });
+    if (keycloak) {
+      keycloak.login({ redirectUri: window.location.origin + "/dashboard" });
+    }
   };
 
   return (

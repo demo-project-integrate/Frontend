@@ -7,8 +7,6 @@ import router from './routes/index.tsx'
 import KeycloakProvider from './providers/keycloak.tsx'
 
 createRoot(document.getElementById('root')!).render(
-    <KeycloakProvider>
     <RouterProvider router={router} />
-     </KeycloakProvider>, 
 )  
     

@@ -3,6 +3,8 @@ import productData from "../../data/product.json";
 import { MdDelete } from "react-icons/md";
 import { MdEditSquare } from "react-icons/md";
 const ProductList = () => {
+  const response = fetch(import.meta.env.VITE_BASE_URL+"/product", { mode: 'cors' }).then((response) => response.json()).then((data) => console.log(data));
+  console.log(response);
   return (
     <>
       {/* <h1 className="text-3xl font-bold mb-10 mt-15 ml-30 ">Product List</h1> */}
