@@ -10,4 +10,5 @@ createRoot(document.getElementById('root')!).render(
     <KeycloakProvider>
     <RouterProvider router={router} />
      </KeycloakProvider>, 
-)
+)  
+    

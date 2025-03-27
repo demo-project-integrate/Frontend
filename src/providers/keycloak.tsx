@@ -15,11 +15,11 @@ const KeycloakProvider = ({ children }: { children: ReactNode }) => {
   const initializeKeycloak = () => {
     if (!isInitialized) {
       isInitialized = true;
-      if (import.meta.env.MODE === "development") {
-        keycloak.authenticated = true;
-        keycloak.token = "mocked-token";  // Fake token for testing
-        return Promise.resolve(true);
-    }
+    //   if (import.meta.env.MODE === "development") {
+    //     keycloak.authenticated = true;
+    //     keycloak.token = "mocked-token";  // Fake token for testing
+    //     return Promise.resolve(true);
+    // }
       return keycloak.init({
         onLoad: "check-sso", // Silent session check without redirection
         checkLoginIframe: false, // Disables iframe-based auto-login

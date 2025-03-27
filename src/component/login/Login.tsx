@@ -1,5 +1,5 @@
 import React from "react";
-import {keycloak} from "../../providers/keycloak";
+import { keycloak } from "../../providers/keycloak";
 
 const LoginPage: React.FC = () => {
   // const [authenticated, setAuthenticated] = useState<boolean>(false);
