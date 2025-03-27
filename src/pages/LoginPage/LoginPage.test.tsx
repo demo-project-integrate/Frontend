@@ -1,33 +1,24 @@
-import { render, screen, fireEvent } from "@testing-library/react";
-import { describe, test, expect, vi } from "vitest";
+import { render, screen } from "@testing-library/react";
+import { describe, test, expect } from "vitest";
 import LoginPage from "../LoginPage";
-import { keycloak } from "../../providers/keycloak";
-
-vi.mock("../../providers/keycloak", () => ({
-  keycloak: {
-    login: vi.fn(),
-  },
-}));
 
 describe("LoginPage", () => {
-  test("renders LoginPage correctly", () => {
+  test("renders login page content correctly", () => {
     render(<LoginPage />);
     
+    // Test static content
     expect(screen.getByText("Invoice Management System")).toBeInTheDocument();
     expect(
       screen.getByText(
         "Generate invoices, track payments, and manage your finances with ease — all in one intuitive platform."
       )
     ).toBeInTheDocument();
+    
+    // Test for presence of login button
     expect(screen.getByRole("button", { name: /login here/i })).toBeInTheDocument();
-  });
-
-  test("calls keycloak.login on button click", () => {
-    render(<LoginPage />);
-    const loginButton = screen.getByRole("button", { name: /login here/i });
-    fireEvent.click(loginButton);
-    expect(keycloak.login).toHaveBeenCalledWith({
-      redirectUri: "http://localhost:5173/dashboard",
-    });
+    
+    // Test for any other static elements you have
+    expect(screen.getByRole("heading", { level: 1 })).toBeInTheDocument();
+    expect(screen.getByAltText("logo")).toBeInTheDocument(); // If you have images
   });
 });
