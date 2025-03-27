@@ -12,7 +12,7 @@ export const addProduct = async (product: Product) => {
   
 
   try {
-    const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/product`, product, {
+    const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/product/create`, product, {
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${localStorage.getItem("keycloak-token")}`,
