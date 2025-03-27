@@ -19,6 +19,6 @@ describe("LoginPage", () => {
     
     // Test for any other static elements you have
     expect(screen.getByRole("heading", { level: 1 })).toBeInTheDocument();
-    expect(screen.getByAltText("logo")).toBeInTheDocument(); // If you have images
+    expect(screen.getByAltText("Logo")).toBeInTheDocument(); // If you have images
   });
 });
