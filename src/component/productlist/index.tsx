@@ -1,8 +1,32 @@
-import React from "react";
-import productData from "../../data/product.json";
+import React, { useEffect, useState } from "react";
+
 import { MdDelete } from "react-icons/md";
 import { MdEditSquare } from "react-icons/md";
+import { getProducts } from "../../api/product";
 const ProductList = () => {
+  interface Product {
+    name: string;
+    description: string;
+    price: number;
+    hsnCode: string;
+  }
+  
+  const [productData, setProductData] = useState<Product[]>([]);
+
+
+  useEffect(() => { 
+    const fetchProducts = async () => {
+      const response = await getProducts();
+      console.log("Product List:", response);
+      setProductData(response);
+    };
+    fetchProducts();
+  }, []);
+
+  console.log("HYE",productData)
+
+
+  
   return (
     <>
       {/* <h1 className="text-3xl font-bold mb-10 mt-15 ml-30 ">Product List</h1> */}
@@ -33,12 +57,12 @@ const ProductList = () => {
                 }`}
               >
                 <td className="py-2 px-4 text-center">{index + 1}</td>
-                <td className="py-2 px-4 whitespace-nowrap">{product.productName}</td>
-                <td className="py-2 px-4">{product.description.slice(0,50)}{"..."}</td>
+                <td className="py-2 px-4 whitespace-nowrap">{product.name}</td>
+                <td className="py-2 px-4">{product.description}</td>
                 <td className="py-2 px-4 ">
-                  ₹{product.price.toFixed(2)}
+                  ₹{product.price}
                 </td>
-                <td className="py-2 px-4 text-gray-500">{product.hcnCode}</td>
+                <td className="py-2 px-4 text-gray-500">{product.hsnCode}</td>
                 <td data-testid="delete-icon">
                   <MdDelete />
                 </td>
@@ -55,3 +79,4 @@ const ProductList = () => {
 };
 
 export default ProductList;
+

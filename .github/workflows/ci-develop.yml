@@ -9,6 +9,10 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      VITE_KEYCLOAK_URL: "http://20.244.102.185:9000"
+      VITE_KEYCLOAK_REALM: "ims"
+      VITE_KEYCLOAK_CLIENT_ID: "ims-client"
     steps:
       - uses: actions/checkout@v4
       
