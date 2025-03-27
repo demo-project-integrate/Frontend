@@ -1,57 +1,93 @@
+import React, { useState, useEffect } from "react";
 
-import { useState, useEffect } from "react";
-import invoiceData from "../../data/invoice.json"; // Import JSON data
+import { getInvoices } from "../../api/invoice";
 
 const InvoiceList = () => {
-    interface Invoice {
-        invoice_number: string;
-        date: string;
-        bill_to: string;
-        items: { desc: string; qty: number; price: number; total: number }[];
-        subtotal: number;
-        tax: number;
-        total: number;
-        status: string;
-    }
+  interface User {
+    id: number;
+    name: string;
+    email: string;
+    phone: string;
+  }
 
-    const [invoices, setInvoices] = useState<Invoice[]>([]);
+  interface Item {
+    id: number;
+    productId: number;
+    productName: string;
+    quantity: number;
+    price: number;
+  }
 
-    useEffect(() => {
-        return setInvoices(invoiceData);
-    }, []);
-    return (
-        <div className="p-4">
-            <h2 className="text-lg font-bold mb-4">Invoice List</h2>
-            <table className="w-full border-collapse border border-gray-300">
-                <thead>
-                    <tr className="bg-gray-100">
-                        <th className="border p-2">Invoice #</th>
-                        <th className="border p-2">Date</th>
-                        <th className="border p-2">Bill To</th>
-                        <th className="border p-2">Subtotal</th>
-                        <th className="border p-2">Tax</th>
-                        <th className="border p-2">Total</th>
-                        <th className="border p-2">Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {invoices.map((invoice, index) => (
-                        <tr key={index} className="text-center">
-                            <td className="border p-2">{invoice.invoice_number}</td>
-                            <td className="border p-2">{invoice.date}</td>
-                            <td className="border p-2">{invoice.bill_to}</td>
-                            <td className="border p-2">${invoice.subtotal}</td>
-                            <td className="border p-2">${invoice.tax}</td>
-                            <td className="border p-2 font-bold">${invoice.total}</td>
-                            <td className={`border p-2 font-semibold ${invoice.status === "Paid" ? "text-green-600" : invoice.status === "Pending" ? "text-yellow-600" : "text-red-600"}`}>
-                                {invoice.status}
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
-    );
+  interface Invoice {
+    id: number;
+    invoiceNumber: string;
+    createdAt: string;
+    user: User;
+    items: Item[];
+  }
+
+  const [invoices, setInvoices] = useState<Invoice[]>([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const response = await getInvoices();
+      console.log("Product List:", response);
+      response;
+      setInvoices(response);
+    };
+    fetchProducts();
+  }, []);
+
+  return (
+    <div className="p-4">
+      <h2 className="text-lg font-bold mb-4">Invoice List</h2>
+      <table className="w-full border-collapse border border-gray-300">
+        <thead>
+          <tr className="bg-gray-100">
+            <th className="border p-2">Invoice #</th>
+            <th className="border p-2">Date</th>
+            <th className="border p-2">Bill To</th>
+            <th className="border p-2">Product</th>
+            <th className="border p-2">quantity</th>
+            <th className="border p-2">price</th>
+
+            <th className="border p-2">total</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {invoices.map((invoice, index) =>
+            invoice.items.map((item, itemIndex) => (
+              <tr key={`${index}-${itemIndex}`} className="text-center">
+                {/* Show Invoice details only for the first item */}
+                {itemIndex === 0 && (
+                  <>
+                    <td className="border p-2" rowSpan={invoice.items.length}>
+                      {invoice.invoiceNumber.slice(0, 8)}...
+                    </td>
+                    <td className="border p-2" rowSpan={invoice.items.length}>
+                      {new Date(invoice.createdAt).toLocaleDateString()}
+                    </td>
+                    <td className="border p-2" rowSpan={invoice.items.length}>
+                      {invoice.user.name}
+                    </td>
+                  </>
+                )}
+
+                {/* Product details */}
+                <td className="border p-2">{item.productName}</td>
+                <td className="border p-2">{item.quantity}</td>
+                <td className="border p-2">${item.price}</td>
+                <td className="border p-2 font-bold">
+                  ${item.price * item.quantity}
+                </td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
+    </div>
+  );
 };
 
 export default InvoiceList;
