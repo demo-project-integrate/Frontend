@@ -1,5 +1,46 @@
+import { useState } from "react";
+import { createInvoice } from "../../api/invoice";
 
 const  Invoice = () => {
+ // Ensure you import the User type
+  
+  const [ user , setUser] = useState("");
+  const[phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [productName, setProductName] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [price, setPrice] = useState("");
+  
+     // Ensure user is of type User
+   
+     const handleGenerateInvoice = async () => {
+      const invoiceData = {
+        user: {
+          name: user,
+          email: email,
+          phone: phone,
+        },
+        products: [
+          {
+            productId: Math.floor(Math.random() * 1000), // Replace with real ID if available
+            productName: productName,
+            quantity: Number(quantity),
+            price: Number(price),
+          },
+        ],
+      };
+  
+      try {
+        const response = await createInvoice(invoiceData);
+        console.log("Invoice created successfully:", response);
+        alert("Invoice created successfully!");
+      } catch (error) {
+        console.error("Failed to create invoice", error);
+        alert("Failed to create invoice");
+      }
+    };
+  
+
     return (
       <div className="Invoice">
        
@@ -66,6 +107,8 @@ const  Invoice = () => {
                     type="text"
                     placeholder="Name"
                     className="w-full md:w-[70%] border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                    value={user}
+                    onChange={(e) => setUser(e.target.value)}
                   />
                 </div>
                 <div className="mt-5 w-[100%] flex flex-row items-center">
@@ -74,6 +117,8 @@ const  Invoice = () => {
                     type="text"
                     placeholder="Email"
                     className="w-full md:w-[70%] border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                    value={email}
+                    onChange={(e)=>setEmail(e.target.value)}
                   />
                 </div>
                 <div className="mt-5 w-[100%] flex flex-row items-center">
@@ -82,6 +127,7 @@ const  Invoice = () => {
                     type="text"
                     placeholder="Client Address"
                     className="w-full md:w-[70%] border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+
                   />
                 </div>
                 <div className="mt-5 w-[100%] flex flex-row items-center">
@@ -90,6 +136,8 @@ const  Invoice = () => {
                     type="text"
                     placeholder="Client Phone"
                     className="w-full md:w-[70%] border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                    value={phone}
+                    onChange={(e)=>setPhone(e.target.value)}
                   />
                 </div>
                 <div className="mt-5 w-[100%] flex flex-row items-center">
@@ -151,6 +199,8 @@ const  Invoice = () => {
                     type="text"
                     placeholder="Item Description"
                     className="w-full border-[1px] border-gray-400 rounded-md p-2"
+                    value={productName}
+                    onChange={(e)=>setProductName(e.target.value)}
                   />
                   <textarea
                     placeholder="Additional Details"
@@ -170,6 +220,8 @@ const  Invoice = () => {
                     type="text"
                     placeholder="Qty"
                     className="w-full border-[1px] border-gray-400 rounded-md p-2"
+                    value={quantity}
+                    onChange={(e)=>setQuantity(e.target.value)}
                   />
                 </div>
                 <div className="w-[100%] md:w-[20%] p-2 md:block flex flex-row items-center justify-between gap-2">
@@ -177,6 +229,8 @@ const  Invoice = () => {
                     type="text"
                     placeholder="Amount"
                     className="w-[50%] md:w-full border-[1px] border-gray-400 rounded-md p-2"
+                    value={price}
+                    onChange={(e)=>setPrice(e.target.value)}
                   />
                   <div className="w-[50%] md:hidden block bg-red-500 text-white p-2 rounded"> DELETE </div>
                 </div>
@@ -210,8 +264,14 @@ const  Invoice = () => {
                   className="w-full h-28 border-[1px] border-gray-400 rounded-md p-2"
                 />
               </div>
-         
+              <button
+              type="submit"
+              className="bg-blue-400 w-fit text-white font-bold py-2 px-4 rounded-lg hover:bg-[#2849a3] transition duration-300 mt-4"
+              onClick={handleGenerateInvoice}>
+              Generate Invoice
+            </button>
         </div>
+       
       </div>
     );
   }

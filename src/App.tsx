@@ -1,8 +1,9 @@
 import React from "react";
-import {keycloak} from "./providers/keycloak";
+import { useKeycloak } from "./providers/keycloak";
 
 
 const App: React.FC = () => {
+    const { keycloak } = useKeycloak();
     return (
         <button onClick={() => keycloak.logout({redirectUri: "http://localhost:5173"})}>
             Welcome

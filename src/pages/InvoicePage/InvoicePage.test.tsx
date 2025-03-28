@@ -7,7 +7,7 @@ describe("Invoice Component", () => {
   });
 
   test("renders invoice title", () => {
-    expect(screen.getByText(/Invoice/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Invoice/i));
   });
 
   test("renders logo section", () => {
@@ -40,7 +40,7 @@ describe("Invoice Component", () => {
 
   test("renders items table headers", () => {
     expect(screen.getByText(/DESC/i)).toBeInTheDocument();
-    expect(screen.getByText(/RATE/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/RATE/i));
     expect(screen.getByText(/QTY/i)).toBeInTheDocument();
     expect(screen.getByText(/AMOUNT/i)).toBeInTheDocument();
   });
