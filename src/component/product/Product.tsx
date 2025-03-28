@@ -35,11 +35,6 @@ const Product = () => {
     }
   };
 
-useEffect(() => { 
-  const response =  getProducts();
-  console.log("Product List:", response);
-}
-  , []);
 
   return (
     <>
