@@ -169,6 +169,14 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.AZURE_VM_USERNAME }}@${{ secrets.AZURE_VM_IP }} \
             "cd test && \
+             # Kill previous process if running
+             if [ -f frontend.pid ]; then \
+             PID=$(cat frontend.pid); \
+             if ps -p $PID > /dev/null 2>&1; then \
+             kill -9 $PID && echo "Old process $PID killed"; \
+             fi; \
+             rm -f frontend.pid; \
+             fi && \
              git pull origin develop && \
              npm install && \
              nohup npm run dev -- --host --port 8081 > frontend.log 2>&1 & echo \$! > frontend.pid && \
